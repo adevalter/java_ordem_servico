@@ -7,7 +7,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final ModelMapper modelMapper;
@@ -33,9 +35,15 @@ public class ClienteService {
     }
 
     public ClienteDTO update(Long id, ClienteDTO clienteDTO){
-        Cliente cliente = convertToPessoa(clienteDTO);
-        cliente = clienteRepository.save(cliente);
-        return convertToDTO(cliente);
+        Cliente clienteExistente = clienteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
+
+        // Copia os campos do DTO para a entidade existente
+        clienteExistente.setNome(clienteDTO.getNome());
+        clienteExistente.setEmail(clienteDTO.getEmail());
+
+        clienteRepository.save(clienteExistente);
+        return convertToDTO(clienteExistente);
     }
 
     private ClienteDTO convertToDTO(Cliente cliente){

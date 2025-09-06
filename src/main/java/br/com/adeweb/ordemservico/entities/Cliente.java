@@ -3,11 +3,13 @@ package br.com.adeweb.ordemservico.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "cliente")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,5 +24,5 @@ public class Cliente {
     private String email;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrdemServico> ordensServico;
+    private List<OrdemServico> ordensServico = new ArrayList<>();
 }

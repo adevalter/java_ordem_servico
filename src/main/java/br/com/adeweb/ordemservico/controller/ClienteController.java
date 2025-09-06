@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("cliente")
 public class ClienteController {
 
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
+
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
 
     @GetMapping
     public ResponseEntity<Page<ClienteDTO>> getAll(
@@ -38,7 +42,7 @@ public class ClienteController {
     public ClienteDTO update(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO){
         ClienteDTO clienteAtual = clienteService.buscarPorId(id);
         BeanUtils.copyProperties(clienteDTO, clienteAtual, "id");
-        return  clienteService.salvar(clienteDTO);
+        return  clienteService.salvar(clienteAtual);
     }
 
 }
