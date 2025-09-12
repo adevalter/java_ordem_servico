@@ -1,4 +1,4 @@
-package br.com.adeweb.ordemservico.entities;
+package br.com.adeweb.ordemservico.adapter.output.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Cliente {
+public class ClienteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +24,5 @@ public class Cliente {
     private String email;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrdemServico> ordensServico = new ArrayList<>();
+    private List<OrdemServicoEntity> ordensServico = new ArrayList<>();
 }

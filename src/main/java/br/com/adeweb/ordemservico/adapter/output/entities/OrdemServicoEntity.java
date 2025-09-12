@@ -1,4 +1,4 @@
-package br.com.adeweb.ordemservico.entities;
+package br.com.adeweb.ordemservico.adapter.output.entities;
 
 import br.com.adeweb.ordemservico.Enum.StatusOrdemServicoEnum;
 import jakarta.persistence.*;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrdemServico {
+public class OrdemServicoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class OrdemServico {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    private ClienteEntity cliente;
 
     private String descricao;
 
