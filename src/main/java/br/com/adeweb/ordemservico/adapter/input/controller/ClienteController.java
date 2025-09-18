@@ -1,12 +1,12 @@
 package br.com.adeweb.ordemservico.adapter.input.controller;
 
+
 import br.com.adeweb.ordemservico.adapter.input.mapper.ClienteMapper;
 import br.com.adeweb.ordemservico.adapter.input.request.ClienteRequest;
-import br.com.adeweb.ordemservico.adapter.input.request.ClienteResponse;
+import br.com.adeweb.ordemservico.adapter.input.response.ClienteResponse;
 import br.com.adeweb.ordemservico.core.domain.model.Cliente;
 import br.com.adeweb.ordemservico.core.usecase.ClienteUseCase;
 import br.com.adeweb.ordemservico.port.input.ClienteInputPort;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +20,7 @@ public class ClienteController {
 
     private final ClienteInputPort clienteInputPort;
     private final ClienteMapper clienteMapper;
+
     public ClienteController(ClienteUseCase clienteInputPort, ClienteMapper clienteMapper) {
         this.clienteInputPort = clienteInputPort;
         this.clienteMapper = clienteMapper;
@@ -46,19 +47,19 @@ public class ClienteController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ClienteResponse save(@RequestBody ClienteRequest clienteRequest){
-        Cliente cliente = clienteMapper.toDmain(clienteRequest);
+    public ResponseEntity<ClienteResponse> save(@RequestBody ClienteRequest clienteRequest){
+        Cliente cliente = clienteMapper.toDomainFromRequest(clienteRequest);
         Cliente clienteSalvo = clienteInputPort.salvar(cliente);
         ClienteResponse response = clienteMapper.toResponse(clienteSalvo);
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ClienteResponse> update(@PathVariable Long id, @RequestBody ClienteRequest clienteRequest){
-        Cliente updateCliente  = clienteInputPort.buscarPorId(id);
-        ClienteResponse clienteDTO = clienteMapper.toResponse(updateCliente);
-        return ResponseEntity.ok(clienteDTO);
+        Cliente cliente = clienteMapper.toDomainFromRequest(clienteRequest);
+        Cliente atualizado = clienteInputPort.update(id,cliente);
+        ClienteResponse clienteResponse = clienteMapper.toResponse(atualizado);
+        return ResponseEntity.ok(clienteResponse);
     }
 
 }

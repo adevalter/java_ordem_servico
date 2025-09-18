@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ClienteOutputPort {
-    Cliente save (Cliente cliente);
     Page<Cliente> findAll(Pageable pageable);
     Cliente buscarPorId(Long id);
     Cliente salvar(Cliente cliente);
