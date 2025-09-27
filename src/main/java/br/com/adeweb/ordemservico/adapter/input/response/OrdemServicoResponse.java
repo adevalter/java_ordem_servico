@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OrdemServicoResponse {
     private Long id;
-    private ClienteResponse cliente;
+    private long clienteId;
     private String descricao;
     private StatusOrdemServicoEnum status;
     private BigDecimal valor;

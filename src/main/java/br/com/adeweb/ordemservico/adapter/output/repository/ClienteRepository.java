@@ -39,7 +39,6 @@ public class ClienteRepository implements ClienteOutputPort {
     public Page<Cliente> findAll(Pageable pageable) {
         try {
             String sql = "SELECT id, nome, email FROM cliente LIMIT ? OFFSET ?";
-
             List<ClienteEntity> clienteEntities = jdbcTemplate.<ClienteEntity>query(
                     sql,clienteRowMapper,
                     new Object[]{pageable.getPageSize(), pageable.getOffset()}
@@ -64,20 +63,19 @@ public class ClienteRepository implements ClienteOutputPort {
     @Override
     public Cliente salvar(Cliente cliente) {
         try {
-
+            ClienteEntity clienteEntity = clienteMapper.toEntity(cliente);
                 String sql = "INSERT INTO cliente (nome,email) values (?,?) ";
                 KeyHolder keyHolder = new GeneratedKeyHolder();
                 jdbcTemplate.update(connection -> {
                     PreparedStatement ps = connection.prepareStatement(sql, new String[]{ConstantUtils.ID});
-                    ps.setString(1, cliente.getNome());
-                    ps.setString(2, cliente.getEmail());
+                    ps.setString(1, clienteEntity.getNome());
+                    ps.setString(2, clienteEntity.getEmail());
                     return ps;
                 }, keyHolder);
                 long generatedId;
             generatedId = Objects.requireNonNull(keyHolder.getKey()).longValue();
-            cliente.setId(generatedId);
-
-            return  cliente;
+            clienteEntity.setId(generatedId);
+            return  clienteMapper.toDomainEntity(clienteEntity);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao inserir usuário: " + e.getMessage(), e);
         }
@@ -85,11 +83,10 @@ public class ClienteRepository implements ClienteOutputPort {
 
     @Override
     public Cliente update(Long id, Cliente cliente) throws RuntimeException {
+        ClienteEntity clienteEntityUpdate = clienteMapper.toEntity(cliente);
         String sql = "UPDATE cliente SET nome = ?, email = ? WHERE id = ?";
-        int rowsAffected = jdbcTemplate.update(sql, cliente.getNome(), cliente.getEmail(), id);
-
+        int rowsAffected = jdbcTemplate.update(sql, clienteEntityUpdate.getNome(), clienteEntityUpdate.getEmail(), id);
         if (rowsAffected == 0) throw new RuntimeException("Cliente com id " + id + " não encontrado.");
-
         // Buscar o cliente atualizado
         String selectSql = "SELECT id, nome, email FROM cliente WHERE id = ?";
         ClienteEntity clienteEntity = jdbcTemplate.<ClienteEntity>queryForObject(selectSql, clienteRowMapper, id);

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class OrdemServico {
     private Long id;
-    private Cliente cliente;
+    private long clienteId;
     private String descricao;
     private StatusOrdemServicoEnum status;
     private BigDecimal valor;
@@ -18,9 +18,9 @@ public class OrdemServico {
     public OrdemServico() {
     }
 
-    public OrdemServico(Long id, Cliente cliente, String descricao, StatusOrdemServicoEnum status, BigDecimal valor, LocalDateTime abertoEm, LocalDateTime fechadoEm, LocalDateTime atualizadoEm) {
+    public OrdemServico(Long id, long clienteId, String descricao, StatusOrdemServicoEnum status, BigDecimal valor, LocalDateTime abertoEm, LocalDateTime fechadoEm, LocalDateTime atualizadoEm) {
         this.id = id;
-        this.cliente = cliente;
+        this.clienteId = clienteId;
         this.descricao = descricao;
         this.status = status;
         this.valor = valor;
@@ -37,12 +37,12 @@ public class OrdemServico {
         this.id = id;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public long getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setClienteId(long clienteId) {
+        this.clienteId = clienteId;
     }
 
     public String getDescricao() {

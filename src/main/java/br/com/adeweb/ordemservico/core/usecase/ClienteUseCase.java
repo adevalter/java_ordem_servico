@@ -22,7 +22,7 @@ public class ClienteUseCase implements ClienteInputPort {
         return outputPort.findAll(pageable);
     }
 
-    public Cliente buscarPorId(Long id){
+    public Cliente findById(Long id){
         return outputPort.buscarPorId(id);
     }
 
@@ -31,7 +31,7 @@ public class ClienteUseCase implements ClienteInputPort {
     }
 
     public Cliente update(Long id, Cliente cliente){
-       buscarPorId(id);
+       findById(id);
        return outputPort.update(id,cliente);
     }
 

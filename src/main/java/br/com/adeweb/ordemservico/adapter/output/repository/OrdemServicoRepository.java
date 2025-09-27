@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -38,12 +37,12 @@ public class OrdemServicoRepository  implements OrdemServicoOutputPort {
     @Override
     public Page<OrdemServico> findAll(Pageable pageable) {
         try {
-            String sql = "SELECT * FROM ordem_servico WHERE LIMIT ? OFFSET ?";
+            String sql = "SELECT * FROM ordem_servico LIMIT ? OFFSET ?";
 
             List<OrdemServicoEntity> ordemServicoEntities = jdbcTemplate.query(
                     sql, ordemServicoRowMapper,
                     pageable.getPageSize(), pageable.getOffset());
-            String countSql = "SELECT COUNT(*) FROM ORDEMSERVICO";
+            String countSql = "SELECT COUNT(*) FROM ordem_servico";
             Long total = jdbcTemplate.queryForObject(countSql, Long.class);
             return new PageImpl<>(ordemServicoMapper.toDomainList(ordemServicoEntities),pageable,total);
         } catch (Exception e) {
@@ -70,7 +69,7 @@ public class OrdemServicoRepository  implements OrdemServicoOutputPort {
         KeyHolder keyHolder= new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{ConstantUtils.ID});
-            ps.setLong(1, ordemServico.getCliente().getId());
+            ps.setLong(1, ordemServico.getClienteId());
             ps.setString(2,ordemServico.getDescricao());
             ps.setString(3,ordemServico.getStatus().name());
             ps.setBigDecimal(4,ordemServico.getValor());
@@ -83,7 +82,7 @@ public class OrdemServicoRepository  implements OrdemServicoOutputPort {
     @Override
     public OrdemServico update(Long id,OrdemServico ordemServico) {
         String sql = "UPDATE ordem_servico SET descricao = ?, status = ?, valor = ?, atualizado_em = NOW() WHERE id = ?";
-        int rowsAffected = jdbcTemplate.update(sql, ordemServico.getDescricao(),ordemServico.getStatus().name());
+        int rowsAffected = jdbcTemplate.update(sql, ordemServico.getDescricao(),ordemServico.getStatus().name(),ordemServico.getValor(), id);
         if (rowsAffected == 0) throw new RuntimeException("Ordem de Serviço com id " +id + " não encontrado");
 
         String select  = "select * from ordem_servico where id = ?";

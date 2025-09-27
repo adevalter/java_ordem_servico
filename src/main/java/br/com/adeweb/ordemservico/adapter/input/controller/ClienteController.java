@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("cliente")
 public class ClienteController {
@@ -27,21 +29,22 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ClienteRequest>> getAll(
+    public ResponseEntity<Page<ClienteResponse>> getAll(
             @RequestParam(defaultValue = "0") final Integer pageNumber,
             @RequestParam(defaultValue = "10") final Integer size
     ){
         Pageable pageable = PageRequest.of(pageNumber, size);
         Page<Cliente> clientes = clienteInputPort.findAll(pageable);
 
-        Page<ClienteRequest> clienteRequests = clientes.map(clienteMapper::toRequest);
+        Page<ClienteResponse> clienteResponses = clientes.map(clienteMapper::toResponse);
 
-        return ResponseEntity.ok(clienteRequests);
+        return ResponseEntity.ok(clienteResponses);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponse> byId(@PathVariable Long id) {
-       Cliente cliente = clienteInputPort.buscarPorId(id);
+       Cliente cliente = clienteInputPort.findById(id);
+
        ClienteResponse clienteResponse = clienteMapper.toResponse(cliente);
        return ResponseEntity.ok(clienteResponse);
     }

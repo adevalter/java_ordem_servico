@@ -19,5 +19,5 @@ public interface ClienteMapper {
 
     ClienteRequest toRequest(Cliente cliente);
     ClienteResponse toResponse(Cliente cliente);
-
+    ClienteEntity toEntity(Cliente cliente);
 }
