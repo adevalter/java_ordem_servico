@@ -39,10 +39,8 @@ public class OrdemServicoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<OrdemServicoResponse> byId(@PathVariable Long id) {
-        Optional<OrdemServico> ordemServico = ordemServicoInputPort.findById(id);
-        return ordemServico
-                .map(os -> ResponseEntity.ok(ordemServicoMapper.toResponse(os)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        OrdemServico ordemServico = ordemServicoInputPort.findById(id);
+        return  ResponseEntity.ok(ordemServicoMapper.toResponse(ordemServico));
     }
     @PostMapping
     public ResponseEntity<OrdemServicoResponse> save(@RequestBody OrdemServicoRequest ordemServicoRequest){

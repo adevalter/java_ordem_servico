@@ -14,6 +14,7 @@ public interface OrdemServicoMapper {
 
     OrdemServico toDaminFromRequest(OrdemServicoRequest ordemServicoRequest);
     OrdemServico toDomainFromEntity(OrdemServicoEntity ordemServicoEntity);
+    OrdemServicoEntity toEntity(OrdemServico ordemServico);
     OrdemServicoRequest toRequest(OrdemServico ordemServico);
     OrdemServicoResponse toResponse(OrdemServico ordemServico);
     List<OrdemServico> toDomainList(List<OrdemServicoEntity> ordemServicoEntityList);

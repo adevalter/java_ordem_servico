@@ -1,6 +1,7 @@
 package br.com.adeweb.ordemservico.core.usecase;
 
 import br.com.adeweb.ordemservico.core.domain.model.OrdemServico;
+import br.com.adeweb.ordemservico.core.exception.EntidadeNaoEncontradaExecption;
 import br.com.adeweb.ordemservico.port.input.OrdemServicoInputPort;
 import br.com.adeweb.ordemservico.port.output.OrdemServicoOutputPort;
 import org.springframework.data.domain.Page;
@@ -23,8 +24,9 @@ public class OrdemServicoUseCase implements OrdemServicoInputPort {
     }
 
     @Override
-    public Optional<OrdemServico> findById(Long id) {
-        return outputPort.findById(id);
+    public OrdemServico findById(Long id) {
+
+        return outputPort.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaExecption("Ordem Serviço Não encontrado"));
     }
 
     @Override
@@ -34,6 +36,7 @@ public class OrdemServicoUseCase implements OrdemServicoInputPort {
 
     @Override
     public OrdemServico update(Long id,OrdemServico ordemServico) {
+        findById(id);
         return outputPort.update(id, ordemServico);
     }
 

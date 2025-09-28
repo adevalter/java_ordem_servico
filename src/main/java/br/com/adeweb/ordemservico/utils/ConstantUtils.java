@@ -11,4 +11,6 @@ public class ConstantUtils {
     public static final String ABERTO_EM = "aberto_em";
     public static final String FECHADO_EM = "fechado_em";
     public static final String ATUALIZADO_EM = "atualizado_em";
+    public static final String SQL_ALL_ORDEM_SERVICO = "SELECT * FROM ordem_servico LIMIT ? OFFSET ?";
+    public static final String SQL_SELECT_BY_ID_ORDEM_SERVICO = "SELECT * FROM ordem_servico where id = ?";
 }

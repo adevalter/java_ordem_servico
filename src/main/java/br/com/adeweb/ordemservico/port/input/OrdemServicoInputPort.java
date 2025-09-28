@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface OrdemServicoInputPort {
     Page<OrdemServico> findAll(Pageable pageable);
-    Optional<OrdemServico> findById(Long id);
+    OrdemServico findById(Long id);
     OrdemServico save(OrdemServico ordemServico);
     OrdemServico update(Long id, OrdemServico ordemServico);
     OrdemServico delete(OrdemServico ordemServico);
