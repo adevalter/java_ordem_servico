@@ -44,9 +44,7 @@ public class ClienteController {
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponse> byId(@PathVariable Long id) {
        Cliente cliente = clienteInputPort.findById(id);
-
-       ClienteResponse clienteResponse = clienteMapper.toResponse(cliente);
-       return ResponseEntity.ok(clienteResponse);
+       return ResponseEntity.ok(clienteMapper.toResponse(cliente));
     }
 
     @PostMapping
